@@ -2,11 +2,11 @@ import keras as K
 from keras import layers, models
 
 class Model(models.Sequential):
-    def __init__(self, inputShape, numOfClass):
+    def __init__(self, numOfClass, inputShape):
         super().__init__()
 
         self.add(layers.Conv2D(32, kernel_size = (3, 3),
-                                   activation = 'relu'
+                                   activation = 'relu',
                                    input_shape = inputShape))
         self.add(layers.Conv2D(64, kernel_size = (3, 3), 
                                    activation = 'relu'))
@@ -15,8 +15,10 @@ class Model(models.Sequential):
         self.add(layers.Flatten())
         self.add(layers.Dense(128, activation = 'relu'))
         self.add(layers.Dropout(0.5))
+        # self.add(layers.Dense(256, activation = 'relu'))
+        # self.add(layers.Dropout(0.5))
         self.add(layers.Dense(numOfClass, activation = 'softmax'))
 
         self.compile(loss = K.losses.categorical_crossentropy,
-                     optimizer = 'adadelta'
+                     optimizer = 'rmsprop',
                      metrics = ['accuracy'])
